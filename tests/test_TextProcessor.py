@@ -9,13 +9,17 @@ class TestTextProcessor(unittest.TestCase):
     def setUp(self):
         import nltk
 
-        if not nltk.data.find('tokenizers/punkt'):
-            raise ValueError("The NLTK 'punkt' dataset is missing. "
-                             "Please download it using: nltk.download('punkt')")
+        if not nltk.data.find("tokenizers/punkt"):
+            raise ValueError(
+                "The NLTK 'punkt' dataset is missing. "
+                "Please download it using: nltk.download('punkt')"
+            )
 
-        if not nltk.corpus.stopwords.words('english'):
-            raise ValueError("The NLTK 'stopwords' dataset is missing. "
-                             "Please download it using: nltk.download('stopwords')")
+        if not nltk.corpus.stopwords.words("english"):
+            raise ValueError(
+                "The NLTK 'stopwords' dataset is missing. "
+                "Please download it using: nltk.download('stopwords')"
+            )
 
         self.df = pd.DataFrame(
             {

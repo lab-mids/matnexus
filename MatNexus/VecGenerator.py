@@ -7,7 +7,6 @@ from nltk import word_tokenize
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-
 class Corpus:
     """
     Preprocess text from abstracts.
@@ -222,7 +221,7 @@ class VectorOperations:
                 i = j
                 count = ""
                 while i < len(word) and (
-                        word[i].isdigit() or word[i] == "." or word[i] == "-"
+                    word[i].isdigit() or word[i] == "." or word[i] == "-"
                 ):
                     count += word[i]
                     i += 1
@@ -277,9 +276,7 @@ class VectorOperations:
         Returns:
             numpy.ndarray: The vector representation of the given word or phrase.
         """
-        return np.mean(
-            [model.__getitem__(w) for w in word_or_phrase.split()], axis=0
-        )
+        return np.mean([model.__getitem__(w) for w in word_or_phrase.split()], axis=0)
 
     @staticmethod
     def generate_property_vectors(property_list: list, model) -> list:
@@ -347,13 +344,20 @@ class MaterialListGenerator:
                 self.elements_ranges, [], "", material_dict, step
             )
 
-        material_df = pd.DataFrame.from_dict(material_dict,
-                                             orient='index').reset_index()
-        material_df.columns = ['Material'] + list(material_df.columns[1:])
+        material_df = pd.DataFrame.from_dict(
+            material_dict, orient="index"
+        ).reset_index()
+        material_df.columns = ["Material"] + list(material_df.columns[1:])
         return material_df
 
-    def _generate_material_combinations(self, elements_ranges, current_combination,
-                                        current_material, material_dict, step):
+    def _generate_material_combinations(
+        self,
+        elements_ranges,
+        current_combination,
+        current_material,
+        material_dict,
+        step,
+    ):
         """
         Recursive method to generate all combinations of materials.
 
@@ -378,13 +382,17 @@ class MaterialListGenerator:
                 new_combination = current_combination + [(element, rounded_percentage)]
                 new_material = current_material + f"{element}{rounded_percentage}"
                 self._generate_material_combinations(
-                    elements_ranges[1:], new_combination, new_material, material_dict,
-                    step
+                    elements_ranges[1:],
+                    new_combination,
+                    new_material,
+                    material_dict,
+                    step,
                 )
         else:
             if sum(percentage for element, percentage in current_combination) == 100:
                 material_dict[current_material] = dict(
-                    VectorOperations.split_chemical_formula(current_material))
+                    VectorOperations.split_chemical_formula(current_material)
+                )
 
 
 class MaterialSimilarityCalculator:
@@ -433,9 +441,7 @@ class MaterialSimilarityCalculator:
         ]
         return dict(zip(material_list, similarity_vectors))
 
-    def find_top_similar_materials(
-            self, target_material, material_list, top_n=10
-    ):
+    def find_top_similar_materials(self, target_material, material_list, top_n=10):
         """
         Find the top-n materials most similar to the target material.
 
@@ -478,14 +484,15 @@ class MaterialSimilarityCalculator:
         return top_materials_with_similarity
 
     def calculate_similarity_from_dataframe(
-            self,
-            df,
-            element_columns,
-            target_material,
-            top_n=None,
-            percentages_as_decimals=False,
-            experimental_indicator_column='Resistance',
-            experimental_indicator_func=lambda x: 1 / x):
+        self,
+        df,
+        element_columns,
+        target_material,
+        top_n=None,
+        percentages_as_decimals=False,
+        experimental_indicator_column="Resistance",
+        experimental_indicator_func=lambda x: 1 / x,
+    ):
 
         """
         Calculate similarity scores for materials in a DataFrame compared to a target material.
@@ -554,8 +561,9 @@ class MaterialSimilarityCalculator:
 
         return df
 
-    def calculate_similarity_to_list(self, material_list, target_words=None,
-                                          target_materials=None):
+    def calculate_similarity_to_list(
+        self, material_list, target_words=None, target_materials=None
+    ):
         """
         Compute similarity scores between a list of materials and target words/materials.
 
@@ -572,32 +580,38 @@ class MaterialSimilarityCalculator:
         """
         target_vectors = []
         if target_words:
-            word_vectors = [VectorOperations.get_vector(word, self.model) for word in
-                            target_words]
+            word_vectors = [
+                VectorOperations.get_vector(word, self.model) for word in target_words
+            ]
             target_vectors.extend(word_vectors)
         if target_materials:
             material_vectors = [
-                VectorOperations.generate_material_vector(material, self.model) for
-                material in target_materials]
+                VectorOperations.generate_material_vector(material, self.model)
+                for material in target_materials
+            ]
             target_vectors.extend(material_vectors)
 
         average_target_vector = np.mean(target_vectors, axis=0)
 
         if self.property_vectors is not None:
-            average_target_vector = \
-            cosine_similarity([average_target_vector], self.property_vectors)[0]
+            average_target_vector = cosine_similarity(
+                [average_target_vector], self.property_vectors
+            )[0]
 
         material_vectors = [
-            VectorOperations.generate_material_vector(material, self.model) for material
-            in material_list]
+            VectorOperations.generate_material_vector(material, self.model)
+            for material in material_list
+        ]
 
         if self.property_vectors is not None:
             material_vectors = [
-                cosine_similarity([material_vector], self.property_vectors)[0] for
-                material_vector in material_vectors]
+                cosine_similarity([material_vector], self.property_vectors)[0]
+                for material_vector in material_vectors
+            ]
 
         similarity_scores = [
-            cosine_similarity([material_vector], [average_target_vector])[0][0] for
-            material_vector in material_vectors]
+            cosine_similarity([material_vector], [average_target_vector])[0][0]
+            for material_vector in material_vectors
+        ]
 
         return similarity_scores

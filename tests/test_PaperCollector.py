@@ -1,4 +1,3 @@
-
 import unittest
 from unittest.mock import patch, MagicMock, PropertyMock
 import pandas as pd
@@ -26,10 +25,12 @@ class TestScopusPaperCollector(unittest.TestCase):
         mock_data = [
             {"citedby_count": 30, "eid": "eid1", "year": 2015},
             {"citedby_count": 20, "eid": "eid2"},
-            {"citedby_count": 10, "eid": "eid3"}
+            {"citedby_count": 10, "eid": "eid3"},
         ]
         mock_df = pd.DataFrame(mock_data)
-        type(mock_results).citedby_count = PropertyMock(return_value=mock_df["citedby_count"])
+        type(mock_results).citedby_count = PropertyMock(
+            return_value=mock_df["citedby_count"]
+        )
         self.collector.results = mock_df
 
     def test_build_query(self):
@@ -50,7 +51,9 @@ class TestScopusPaperCollector(unittest.TestCase):
 
     def test_sort_by(self):
         sorted_papers = self.collector.sort_by("citedby_count", ascending=False)
-        self.assertEqual(sorted_papers.iloc[0]["citedby_count"], max(sorted_papers["citedby_count"]))
+        self.assertEqual(
+            sorted_papers.iloc[0]["citedby_count"], max(sorted_papers["citedby_count"])
+        )
 
     def test_plot_publications_per_year(self):
         try:

@@ -15,7 +15,7 @@ test:
 
 # Run test with code coverage report
 test-cov:
-	pytest --cov-report=html --cov=ferrowallnucleation/
+	pytest --cov-report=html --cov=MatNexus/
 	firefox htmlcov/index.html
 
 # Install library in developer mode

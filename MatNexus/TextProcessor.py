@@ -115,7 +115,9 @@ class TextProcessor:
             if word.lower() in stop or word.isdigit():
                 continue
 
-            if re.match(chemical_formula_pattern, word) and any(char.isdigit() for char in word):
+            if re.match(chemical_formula_pattern, word) and any(
+                char.isdigit() for char in word
+            ):
                 elements = re.findall(chemical_formula_pattern, word)
                 filter_text.append(word.lower())
                 for element, _ in elements:

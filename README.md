@@ -23,13 +23,13 @@ To install this package, clone the repository and run one of the following comma
 For a system-wide installation:
 
 ```
-python setup.py install
+make install
 ```
 
 For a developer installation (i.e., changes to the source code immediately take effect):
 
 ```
-python setup.py develop
+make install-dev
 ```
 
 Alternatively, you can install the package with pip:
@@ -41,6 +41,29 @@ For a developer installation with pip:
 
 ```
 pip install -e .
+```
+
+You can run the tests using
+```
+make test
+```
+
+Autoformatting and linting is also conveniently used by
+```
+make pretty
+```
+
+and
+
+```
+make lint
+```
+
+respectively.
+
+You can also run all tests, autoformatting, and linting by invoking
+```
+make all
 ```
 
 ## PaperCollector

@@ -16,7 +16,6 @@ from MatNexus.VecGenerator import (
 
 
 class TestCorpus(unittest.TestCase):
-
     def setUp(self):
         data = {"abstract": ["Hydrogen is very reactive."]}
         self.mock_df = pd.DataFrame(data)
@@ -99,7 +98,7 @@ class TestMaterialListGenerator(unittest.TestCase):
         elements_ranges = [("A", (50, 52)), ("B", (48, 50)), ("C", (1, 3))]
         generator = MaterialListGenerator(elements_ranges)
         material_df = generator.generate_material_list()
-        material_list = material_df['Material'].tolist()
+        material_list = material_df["Material"].tolist()
 
         expected_material_list = [
             "A50B48C2",
@@ -113,7 +112,7 @@ class TestMaterialListGenerator(unittest.TestCase):
 class TestMaterialSimilarityCalculator(unittest.TestCase):
     def setUp(self):
         self.mock_model = MockModel(np.array([0.1, 0.2, 0.3]))
-        self.property_list = ['property1', "property2", "property3"]
+        self.property_list = ["property1", "property2", "property3"]
         self.calculator = MaterialSimilarityCalculator(
             self.mock_model, self.property_list
         )
@@ -141,24 +140,27 @@ class TestMaterialSimilarityCalculator(unittest.TestCase):
             "A": [10, 20],
             "B": [20, 30],
             "C": [70, 50],
-            "Resistance": [1.5, 2.0]  # Added 'Resistance' column for example
+            "Resistance": [1.5, 2.0],  # Added 'Resistance' column for example
         }
         df = pd.DataFrame(data)
         target_material = "H2O"
         element_columns = ["A", "B", "C"]
         result = self.calculator.calculate_similarity_from_dataframe(
-            df, element_columns, target_material, top_n=None,
-            percentages_as_decimals=False
+            df,
+            element_columns,
+            target_material,
+            top_n=None,
+            percentages_as_decimals=False,
         )
         expected_material_names = ["A10B20C70", "A20B30C50"]
         expected_similarity = [1.0, 1.0]
-        expected_exp_indicator = [1 / 1.5,
-                                  1 / 2.0]
+        expected_exp_indicator = [1 / 1.5, 1 / 2.0]
         self.assertEqual(result["Material_Name"].tolist(), expected_material_names)
         for actual, expected in zip(result["Similarity"].tolist(), expected_similarity):
             self.assertTrue(math.isclose(actual, expected))
-        self.assertEqual(result["Experimental_Indicator"].tolist(),
-                         expected_exp_indicator)
+        self.assertEqual(
+            result["Experimental_Indicator"].tolist(), expected_exp_indicator
+        )
 
 
 if __name__ == "__main__":

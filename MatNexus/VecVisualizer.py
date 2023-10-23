@@ -49,12 +49,14 @@ class Word2VecVisualizer:
         if level == 0:
             return [(word, level)]
         else:
-            similar_words = self.model.model.wv.similar_by_word(word,
-                                                                topn=top_n_similar)
+            similar_words = self.model.model.wv.similar_by_word(
+                word, topn=top_n_similar
+            )
             collected_words = [(word, level)]
             for sim_word, _ in similar_words:
-                collected_words.extend(self.collect_similar_words(sim_word, level - 1,
-                                                                  top_n_similar))
+                collected_words.extend(
+                    self.collect_similar_words(sim_word, level - 1, top_n_similar)
+                )
             return collected_words
 
     def get_property_vectors(self, property_list):
@@ -122,10 +124,20 @@ class Word2VecVisualizer:
         )
         return self.word_vectors, self.data
 
-    def plot_2d(self, coordinates, property_list,
-                width=720, height=576, marker_size=5,
-                textfont_size=10, legendfont_size=10,
-                axisfont_size=10, tickfont_size=10, scale_factor=1, margin=dict(r=150)):
+    def plot_2d(
+        self,
+        coordinates,
+        property_list,
+        width=720,
+        height=576,
+        marker_size=5,
+        textfont_size=10,
+        legendfont_size=10,
+        axisfont_size=10,
+        tickfont_size=10,
+        scale_factor=1,
+        margin=dict(r=150),
+    ):
         """
         Generate a 2D scatter plot of word embeddings.
 
@@ -155,9 +167,9 @@ class Word2VecVisualizer:
 
         fig = go.Figure()
         custom_color_list = (
-                px.colors.qualitative.Plotly
-                + px.colors.qualitative.D3
-                + px.colors.qualitative.G10
+            px.colors.qualitative.Plotly
+            + px.colors.qualitative.D3
+            + px.colors.qualitative.G10
         )
         shape_list = [
             "circle",
@@ -203,7 +215,7 @@ class Word2VecVisualizer:
                         text=hovertext,
                         hoverinfo="text",
                         textfont=dict(size=textfont_size),
-                        hoverlabel=dict(font_size=textfont_size)
+                        hoverlabel=dict(font_size=textfont_size),
                     )
                 )
 
@@ -214,23 +226,36 @@ class Word2VecVisualizer:
             height=height,
             legend_font_size=legendfont_size,
             xaxis=dict(
-                title_text='t-SNE Dimension 1',
+                title_text="t-SNE Dimension 1",
                 title_font_size=axisfont_size,
                 tickfont_size=tickfont_size,
             ),
             yaxis=dict(
-                title_text='t-SNE Dimension 2',
+                title_text="t-SNE Dimension 2",
                 title_font_size=axisfont_size,
                 tickfont_size=tickfont_size,
-            )
+            ),
         )
 
         return fig
 
-    def plot_data(self, property_list, plot_method="t_sne", level=0, top_n_similar=30,
-                  width=720, height=576, marker_size=5, scale_factor=1,
-                  textfont_size=10, legendfont_size=10,
-                  axisfont_size=10, tickfont_size=10, margin=dict(r=150), **kwargs):
+    def plot_data(
+        self,
+        property_list,
+        plot_method="t_sne",
+        level=0,
+        top_n_similar=30,
+        width=720,
+        height=576,
+        marker_size=5,
+        scale_factor=1,
+        textfont_size=10,
+        legendfont_size=10,
+        axisfont_size=10,
+        tickfont_size=10,
+        margin=dict(r=150),
+        **kwargs,
+    ):
         """
         Visualize word embeddings in 2D using various dimensionality reduction techniques.
 
@@ -273,16 +298,33 @@ class Word2VecVisualizer:
                 "'md_scaling', 'spectral', or 't_sne'."
             )
 
-        return self.plot_2d(coordinates, property_list,
-                     width=width, height=height, marker_size=marker_size,
-                     textfont_size=textfont_size, legendfont_size=legendfont_size,
-                     axisfont_size=axisfont_size, tickfont_size=tickfont_size,
-                     scale_factor=scale_factor, margin=margin)
+        return self.plot_2d(
+            coordinates,
+            property_list,
+            width=width,
+            height=height,
+            marker_size=marker_size,
+            textfont_size=textfont_size,
+            legendfont_size=legendfont_size,
+            axisfont_size=axisfont_size,
+            tickfont_size=tickfont_size,
+            scale_factor=scale_factor,
+            margin=margin,
+        )
 
-    def plot_material_vectors(self, material_list, width=720, height=576,
-                              scale_factor=1,
-                              marker_size=15, textfont_size=5, legendfont_size=10,
-                              axisfont_size=10, tickfont_size=10, **kwargs):
+    def plot_material_vectors(
+        self,
+        material_list,
+        width=720,
+        height=576,
+        scale_factor=1,
+        marker_size=15,
+        textfont_size=5,
+        legendfont_size=10,
+        axisfont_size=10,
+        tickfont_size=10,
+        **kwargs,
+    ):
         """
         Plot a 2D scatter plot of material vectors using t-SNE.
 
@@ -322,45 +364,54 @@ class Word2VecVisualizer:
 
         vectors_2d = tsne.fit_transform(material_vectors)
 
-        df = pd.DataFrame({
-            'x': vectors_2d[:, 0],
-            'y': vectors_2d[:, 1],
-            'label': labels
-        })
-
-        custom_color_list = (
-                px.colors.qualitative.Plotly
-                + px.colors.qualitative.D3
-                + px.colors.qualitative.G10
+        df = pd.DataFrame(
+            {"x": vectors_2d[:, 0], "y": vectors_2d[:, 1], "label": labels}
         )
 
-        fig = px.scatter(df, x='x', y='y', color='label', text='label', width=width,
-                         height=height,
-                         color_discrete_sequence=custom_color_list)
-        fig.update_traces(textposition='middle center', marker_size=marker_size,
-                          textfont_size=textfont_size,
-                          hoverlabel=dict(font_size=textfont_size))
+        custom_color_list = (
+            px.colors.qualitative.Plotly
+            + px.colors.qualitative.D3
+            + px.colors.qualitative.G10
+        )
+
+        fig = px.scatter(
+            df,
+            x="x",
+            y="y",
+            color="label",
+            text="label",
+            width=width,
+            height=height,
+            color_discrete_sequence=custom_color_list,
+        )
+        fig.update_traces(
+            textposition="middle center",
+            marker_size=marker_size,
+            textfont_size=textfont_size,
+            hoverlabel=dict(font_size=textfont_size),
+        )
 
         fig.update_layout(
             autosize=False,
             legend_title_text=None,
             legend_font_size=legendfont_size,
             xaxis=dict(
-                title_text='t-SNE Dimension 1',
+                title_text="t-SNE Dimension 1",
                 title_font_size=axisfont_size,
-                tickfont=dict(size=tickfont_size)
+                tickfont=dict(size=tickfont_size),
             ),
             yaxis=dict(
-                title_text='t-SNE Dimension 2',
+                title_text="t-SNE Dimension 2",
                 title_font_size=axisfont_size,
-                tickfont=dict(size=tickfont_size)
-            )
+                tickfont=dict(size=tickfont_size),
+            ),
         )
 
         return fig
 
-    def plot_similarity_scatter(self, data, elements, nrows=2, ncols=3,
-                                figsize=(20, 10)):
+    def plot_similarity_scatter(
+        self, data, elements, nrows=2, ncols=3, figsize=(20, 10)
+    ):
         """
         Plot a scatter plot showing the similarity of materials based on specified elements.
 
@@ -390,8 +441,9 @@ class Word2VecVisualizer:
                     cmap = "plasma"
                 else:
                     cmap = "viridis"
-                sc = axes[i].scatter(data["x"], data["y"], c=data[element], cmap=cmap,
-                                     marker="o", s=100)
+                sc = axes[i].scatter(
+                    data["x"], data["y"], c=data[element], cmap=cmap, marker="o", s=100
+                )
                 axes[i].set_title(element)
                 fig.colorbar(sc, ax=axes[i])
             else:
@@ -400,10 +452,3 @@ class Word2VecVisualizer:
         plt.tight_layout()
 
         return fig
-
-
-
-
-
-
-

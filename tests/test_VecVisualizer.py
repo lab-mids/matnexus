@@ -28,9 +28,6 @@ class MockModel:
         return self
 
 
-
-
-
 class TestWord2VecVisualizer(unittest.TestCase):
     def setUp(self):
         self.property_list = ["property1", "property2"]
@@ -47,15 +44,14 @@ class TestWord2VecVisualizer(unittest.TestCase):
 
     def test_collect_similar_words(self):
         expected_words = [
-            ('word1', 1),
-            ('word1', 0),
-            ('word2', 0),
-            ('word1', 0),
-            ('word2', 0)
+            ("word1", 1),
+            ("word1", 0),
+            ("word2", 0),
+            ("word1", 0),
+            ("word2", 0),
         ]
         words = self.visualizer.collect_similar_words("word1", level=1, top_n_similar=2)
         self.assertEqual(words, expected_words)
-
 
     def test_get_property_vectors(self):
         expected_vectors = [np.array([0.5, 0.5]), np.array([0.5, 0.5])]
@@ -85,19 +81,25 @@ class TestWord2VecVisualizer(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.visualizer.plot_data(self.property_list, plot_method="invalid_method")
 
-    @patch.object(TSNE, "fit_transform", return_value=np.array([[0.1, 0.2], [0.3, 0.4]]))
+    @patch.object(
+        TSNE, "fit_transform", return_value=np.array([[0.1, 0.2], [0.3, 0.4]])
+    )
     def test_plot_material_vectors(self, mock_tsne_fit_transform):
         material_list = ["material1", "material2"]
         self.visualizer.plot_material_vectors(material_list)
         mock_tsne_fit_transform.assert_called_once()
 
     @patch("plotly.express.scatter")
-    @patch.object(TSNE, "fit_transform", return_value=np.array([[0.1, 0.2],
-                                                                [0.3, 0.4]]))
-    @patch("MatNexus.VecGenerator.VectorOperations.generate_material_vector",
-           return_value=np.array([0.5, 0.5]))
-    def test_plot_material_vectors(self, mock_gen_mat_vec, mock_tsne_fit_transform,
-                                   mock_px_scatter):
+    @patch.object(
+        TSNE, "fit_transform", return_value=np.array([[0.1, 0.2], [0.3, 0.4]])
+    )
+    @patch(
+        "MatNexus.VecGenerator.VectorOperations.generate_material_vector",
+        return_value=np.array([0.5, 0.5]),
+    )
+    def test_plot_material_vectors(
+        self, mock_gen_mat_vec, mock_tsne_fit_transform, mock_px_scatter
+    ):
         material_list = ["material1", "material2"]
 
         self.visualizer.plot_material_vectors(material_list)
@@ -116,19 +118,17 @@ class TestWord2VecVisualizer(unittest.TestCase):
             "Similarity": [0.8, 0.6, 0.9, 0.7, 0.5],
             "Element1": [0.2, 0.5, 0.3, 0.8, 0.9],
             "Element2": [0.7, 0.3, 0.6, 0.4, 0.1],
-            "Experimental_Indicator": [2.5, 1.8, 2.1, 1.9, 3.0]
+            "Experimental_Indicator": [2.5, 1.8, 2.1, 1.9, 3.0],
         }
         df = pd.DataFrame(data)
 
         elements = ["Element1", "Element2", "Similarity", "Experimental_Indicator"]
 
-        fig = self.visualizer.plot_similarity_scatter(df, elements, nrows=2, ncols=2,
-                                                      figsize=(10, 10))
+        fig = self.visualizer.plot_similarity_scatter(
+            df, elements, nrows=2, ncols=2, figsize=(10, 10)
+        )
         self.assertIsNotNone(fig)
 
 
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
