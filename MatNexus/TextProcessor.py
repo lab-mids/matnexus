@@ -81,7 +81,8 @@ class TextProcessor:
 
         This method:
             1. Tokenizes the input string into words.
-            2. Removes punctuation, stop words, pure numbers, and other specific patterns.
+            2. Removes punctuation, stop words, pure numbers, and other specific
+               patterns.
 
         Parameters:
             s (str): The input string to filter.

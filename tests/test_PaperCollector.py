@@ -57,7 +57,8 @@ class TestScopusPaperCollector(unittest.TestCase):
 
     def test_plot_publications_per_year(self):
         try:
-            fig = self.collector.plot_publications_per_year()
+            # Just testing if a figure is created
+            fig = self.collector.plot_publications_per_year()  # noqa
             success = True
         except Exception as e:
             print(f"Error in plot_publications_per_year: {e}")

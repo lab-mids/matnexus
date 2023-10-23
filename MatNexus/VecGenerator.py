@@ -241,12 +241,14 @@ class VectorOperations:
             V = Σ(C_i * v_i) / N
         where:
             - C_i: the count of the i-th element in the formula.
-            - v_i: the vector representation of the i-th element from the word2vec model.
+            - v_i: the vector representation of the i-th element
+                   from the word2vec model.
             - N: the total number of elements in the formula.
 
         Parameters:
             formula (str): The chemical formula of the material.
-            model (gensim.models.Word2Vec): The word2vec model to use for vector generation.
+            model (gensim.models.Word2Vec): The word2vec model to use for vector
+            generation.
 
         Returns:
             numpy.ndarray: The generated vector for the given formula.
@@ -408,7 +410,9 @@ class MaterialSimilarityCalculator:
         Initialize the MaterialSimilarityCalculator with a model and property vectors.
 
         Parameters:
-            model (gensim.models.Word2Vec): The word2vec model for generating vector representations.
+            model (gensim.models.Word2Vec): The word2vec model for generating vector
+                                            representations.
+
             property_list (list, optional): A list of properties for which vectors
                                             are pre-generated. Defaults to None.
         """
@@ -429,7 +433,8 @@ class MaterialSimilarityCalculator:
                                   are to be calculated.
 
         Returns:
-            dict: A dictionary mapping each material in the list to its similarity vector.
+            dict: A dictionary mapping each material in the list to its similarity
+                  vector.
         """
         material_vectors = [
             VectorOperations.generate_material_vector(material, self.model)
@@ -442,11 +447,11 @@ class MaterialSimilarityCalculator:
         return dict(zip(material_list, similarity_vectors))
 
     def find_top_similar_materials(self, target_material, material_list, top_n=10):
-        """
-        Find the top-n materials most similar to the target material.
+        """Find the top-n materials most similar to the target material.
 
-        This method calculates the cosine similarity between the target material
-        and materials from the provided list and then returns the top-n most similar ones.
+        This method calculates the cosine similarity between the
+        target material and materials from the provided list and then
+        returns the top-n most similar ones.
 
         Parameters:
             target_material (str): The name of the target material.
@@ -454,8 +459,9 @@ class MaterialSimilarityCalculator:
             top_n (int, optional): Number of top materials to return. Default is 10.
 
         Returns:
-            list: List of tuples containing the top-n similar materials and their respective
-                  similarity scores.
+            list: List of tuples containing the top-n similar materials and their
+                  respective similarity scores.
+
         """
         material_similarity_vectors = self._calculate_similarity_vectors(material_list)
         material_list = list(material_similarity_vectors.keys())
@@ -494,24 +500,43 @@ class MaterialSimilarityCalculator:
         experimental_indicator_func=lambda x: 1 / x,
     ):
 
-        """
-        Calculate similarity scores for materials in a DataFrame compared to a target material.
+        """Calculate similarity scores for materials in a DataFrame
+        compared to a target material.
 
-        This method computes the cosine similarity between each material in the DataFrame
-        and the target material. The resulting similarity scores are added to the DataFrame.
+        This method computes the cosine similarity between each
+        material in the DataFrame and the target material. The
+        resulting similarity scores are added to the DataFrame.
 
         Parameters:
             df (pd.DataFrame): DataFrame containing materials and their properties.
-            element_columns (list): List of column names in the DataFrame representing the elements.
+
+            element_columns (list): List of column names in the DataFrame representing
+                                    the elements.
+
             target_material (str): The name of the target material.
-            top_n (int, optional): Number of top similar materials to return. If None, returns the entire DataFrame.
-            percentages_as_decimals (bool, optional): Whether the percentages in the DataFrame are given as decimals. Default is False.
-            experimental_indicator_column (str, optional): Name of the column used to compute the 'Experimental_Indicator'. Default is 'Resistance'.
-            experimental_indicator_func (function, optional): Function to compute the 'Experimental_Indicator' value. Default is inverse function.
+
+            top_n (int, optional): Number of top similar materials to return.
+                                   If None, returns the entire DataFrame.
+
+            percentages_as_decimals (bool, optional): Whether the percentages in the
+                                                      DataFrame are given as decimals.
+                                                      Default is False.
+
+            experimental_indicator_column (str, optional): Name of the column used to
+                                                           compute the
+                                                           'Experimental_Indicator'.
+                                                           Default is 'Resistance'.
+
+            experimental_indicator_func (function, optional): Function to compute the
+                                                              'Experimental_Indicator'
+                                                              value. Default is inverse
+                                                              function.
 
         Returns:
-            pd.DataFrame or list: If top_n is None, returns DataFrame with similarity scores.
-                                  Otherwise, returns list of top-n similar materials with their scores.
+            pd.DataFrame or list: If top_n is None, returns DataFrame with similarity
+                                  scores. Otherwise, returns list of top-n similar
+                                  materials with their scores.
+
         """
 
         target_vec = self.model[target_material]
@@ -564,19 +589,27 @@ class MaterialSimilarityCalculator:
     def calculate_similarity_to_list(
         self, material_list, target_words=None, target_materials=None
     ):
-        """
-        Compute similarity scores between a list of materials and target words/materials.
+        """Compute similarity scores between a list of materials and
+        target words/materials.
 
-        This method calculates the cosine similarity between each material in the list and
-        a given set of target words or materials. The method then returns the resulting similarity scores.
+        This method calculates the cosine similarity between each
+        material in the list and a given set of target words or
+        materials. The method then returns the resulting similarity
+        scores.
 
         Parameters:
             material_list (list): List of materials to compute similarity scores for.
-            target_words (list, optional): List of target words or phrases to compare against.
-            target_materials (list, optional): List of target materials to compare against.
+
+            target_words (list, optional): List of target words or phrases to compare
+                                           against.
+
+            target_materials (list, optional): List of target materials to compare
+                                               against.
 
         Returns:
-            list: List of similarity scores corresponding to each material in the `material_list`.
+            list: List of similarity scores corresponding to each material in the
+                  `material_list`.
+
         """
         target_vectors = []
         if target_words:

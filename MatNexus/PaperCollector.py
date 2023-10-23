@@ -119,7 +119,8 @@ class ScopusPaperCollector:
         if config_path is not None:
             os.environ["PYB_CONFIG_FILE"] = config_path
         else:
-            os.environ["PYB_CONFIG_FILE"] = "\.pybliometrics\pybliometrics.cfg"
+            # Windows version
+            os.environ["PYB_CONFIG_FILE"] = "\.pybliometrics\pybliometrics.cfg"  # noqa,
 
     @staticmethod
     def _import_pybliometrics():

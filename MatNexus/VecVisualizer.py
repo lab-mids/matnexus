@@ -27,24 +27,26 @@ class Word2VecVisualizer:
         self.data = None
 
     def collect_similar_words(self, word, level, top_n_similar):
-        """
-        Recursively collect words that are similar to the target word up to a specified level.
+        """Recursively collect words that are similar to the target
+        word up to a specified level.
 
-        At each level, the method finds the top-n similar words to the target word and then
-        recursively collects similar words for each of them until the specified depth (level)
-        is reached.
+        At each level, the method finds the top-n similar words to the
+        target word and then recursively collects similar words for
+        each of them until the specified depth (level) is reached.
 
         Parameters:
             word (str): The target word to start the collection from.
-            level (int, optional): Depth of similarity levels to collect. Level 1 means only
-                                   directly similar words to the target word will be collected.
-                                   Default is 1.
-            top_n_similar (int, optional): Number of top similar words to consider at each level.
-                                           Default is 30.
+            level (int, optional): Depth of similarity levels to collect.
+                                   Level 1 means only directly similar words to
+                                   the target word will be collected.  Default is 1.
+
+            top_n_similar (int, optional): Number of top similar words to consider
+                                           at each level. Default is 30.
 
         Returns:
-            list: A list of tuples where each tuple contains a word and its corresponding
-                  depth level relative to the target word.
+            list: A list of tuples where each tuple contains a word and its
+                  corresponding depth level relative to the target word.
+
         """
         if level == 0:
             return [(word, level)]
@@ -138,24 +140,38 @@ class Word2VecVisualizer:
         scale_factor=1,
         margin=dict(r=150),
     ):
-        """
-        Generate a 2D scatter plot of word embeddings.
+        """Generate a 2D scatter plot of word embeddings.
 
         Parameters:
-            coordinates (numpy.ndarray): 2D array of x, y coordinates for each word.
+
+            coordinates (numpy.ndarray): 2D array of x, y coordinates for
+                                         each word.
+
             property_list (list[str]): List of properties to label the words by.
+
             width (int, optional): Width of the plot. Default is 720.
+
             height (int, optional): Height of the plot. Default is 576.
+
             marker_size (int, optional): Size of the markers. Default is 5.
+
             textfont_size (int, optional): Size of the text font. Default is 10.
+
             legendfont_size (int, optional): Size of the legend font. Default is 10.
+
             axisfont_size (int, optional): Size of the axis font. Default is 10.
+
             tickfont_size (int, optional): Size of the tick font. Default is 10.
-            scale_factor (float, optional): Factor to scale the plot sizes. Default is 1.0.
-            margin (dict, optional): Margins for the plot. Default is a right margin of 150.
+
+            scale_factor (float, optional): Factor to scale the plot sizes
+                                            Default is 1.0.
+
+            margin (dict, optional): Margins for the plot. Default is a right margin
+                                     of 150.
 
         Returns:
             plotly.graph_objs._figure.Figure: A 2D scatter plot of the word embeddings.
+
         """
         width *= scale_factor
         height *= scale_factor
@@ -256,28 +272,49 @@ class Word2VecVisualizer:
         margin=dict(r=150),
         **kwargs,
     ):
-        """
-        Visualize word embeddings in 2D using various dimensionality reduction techniques.
+        """Visualize word embeddings in 2D using various
+        dimensionality reduction techniques.
 
         Parameters:
-            property_list (list[str]): List of properties to visualize related words for.
+            property_list (list[str]): List of properties to visualize
+                                       related words for.
+
             plot_method (str, optional): The dimensionality reduction technique to use.
-                Options are: 'isomap', 'md_scaling', 'spectral', or 't_sne'. Default is 't_sne'.
-            level (int, optional): Depth of similarity levels to collect words from. Default is 1.
-            top_n_similar (int, optional): Number of top similar words to consider. Default is 30.
+                                         Options are: 'isomap', 'md_scaling',
+                                         'spectral', or 't_sne'. Default is 't_sne'.
+
+            level (int, optional): Depth of similarity levels to collect words from.
+                                   Default is 1.
+
+            top_n_similar (int, optional): Number of top similar words to consider.
+                                           Default is 30.
+
             width (int, optional): Width of the plot. Default is 720.
+
             height (int, optional): Height of the plot. Default is 576.
+
             marker_size (int, optional): Size of the markers. Default is 5.
-            scale_factor (float, optional): Factor to scale the plot sizes. Default is 1.0.
+
+            scale_factor (float, optional): Factor to scale the plot sizes.
+                                            Default is 1.0.
+
             textfont_size (int, optional): Size of the text font. Default is 10.
+
             legendfont_size (int, optional): Size of the legend font. Default is 10.
+
             axisfont_size (int, optional): Size of the axis font. Default is 10.
+
             tickfont_size (int, optional): Size of the tick font. Default is 10.
-            margin (dict, optional): Margins for the plot. Default is a right margin of 150.
-            **kwargs: Additional keyword arguments for the dimensionality reduction technique.
+
+            margin (dict, optional): Margins for the plot. Default is a right margin
+                                     of 150.
+
+            **kwargs: Additional keyword arguments for the dimensionality reduction
+                      technique.
 
         Returns:
             plotly.graph_objs._figure.Figure: A 2D scatter plot of the word embeddings.
+
         """
         self.get_words_data(property_list, level=level, top_n_similar=top_n_similar)
         if plot_method == "isomap":
@@ -329,15 +366,26 @@ class Word2VecVisualizer:
         Plot a 2D scatter plot of material vectors using t-SNE.
 
         Parameters:
-            material_list (list[str]): List of materials for which the vectors are to be plotted.
+            material_list (list[str]): List of materials for which the vectors are
+                                       to be plotted.
+
             width (int, optional): Width of the plot. Default is 720.
+
             height (int, optional): Height of the plot. Default is 576.
-            scale_factor (float, optional): Factor to scale the plot sizes. Default is 1.0.
+
+            scale_factor (float, optional): Factor to scale the plot sizes.
+                                            Default is 1.0.
+
             marker_size (int, optional): Size of the markers. Default is 15.
+
             textfont_size (int, optional): Size of the text font. Default is 5.
+
             legendfont_size (int, optional): Size of the legend font. Default is 10.
+
             axisfont_size (int, optional): Size of the axis font. Default is 10.
+
             tickfont_size (int, optional): Size of the tick font. Default is 10.
+
             **kwargs: Additional keyword arguments for the t-SNE method.
 
         Returns:
@@ -412,18 +460,28 @@ class Word2VecVisualizer:
     def plot_similarity_scatter(
         self, data, elements, nrows=2, ncols=3, figsize=(20, 10)
     ):
-        """
-        Plot a scatter plot showing the similarity of materials based on specified elements.
+        """Plot a scatter plot showing the similarity of materials
+        based on specified elements.
 
         Parameters:
-            data (pd.DataFrame): The DataFrame containing the materials and their similarity scores.
+            data (pd.DataFrame): The DataFrame containing the materials and
+                                 their similarity scores.
+
             elements (list[str]): The list of elements to include in the plot.
-            nrows (int, optional): The number of rows in the plot grid. Default is 2.
-            ncols (int, optional): The number of columns in the plot grid. Default is 3.
-            figsize (tuple, optional): The size (width, height) of the figure in inches. Default is (20, 10).
+
+            nrows (int, optional): The number of rows in the plot grid.
+                                   Default is 2.
+
+            ncols (int, optional): The number of columns in the plot grid.
+                                   Default is 3.
+
+            figsize (tuple, optional): The size (width, height) of the figure in inches.
+                                       Default is (20, 10).
 
         Returns:
-            matplotlib.figure.Figure: A scatter plot showing the similarity of materials.
+            matplotlib.figure.Figure: A scatter plot showing the similarity of
+                                      materials.
+
         """
         total_subplots = nrows * ncols
         num_elements = len(elements)
