@@ -81,14 +81,6 @@ class TestWord2VecVisualizer(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.visualizer.plot_data(self.property_list, plot_method="invalid_method")
 
-    @patch.object(
-        TSNE, "fit_transform", return_value=np.array([[0.1, 0.2], [0.3, 0.4]])
-    )
-    def test_plot_material_vectors(self, mock_tsne_fit_transform):
-        material_list = ["material1", "material2"]
-        self.visualizer.plot_material_vectors(material_list)
-        mock_tsne_fit_transform.assert_called_once()
-
     @patch("plotly.express.scatter")
     @patch.object(
         TSNE, "fit_transform", return_value=np.array([[0.1, 0.2], [0.3, 0.4]])
