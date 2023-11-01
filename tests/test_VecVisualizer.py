@@ -50,7 +50,8 @@ class TestWord2VecVisualizer(unittest.TestCase):
             ("word1", 0),
             ("word2", 0),
         ]
-        words = self.visualizer.collect_similar_words("word1", level=1, top_n_similar=2)
+        words = self.visualizer.collect_similar_words("word1", level=1,
+                                                      top_n_similar=2)
         self.assertEqual(words, expected_words)
 
     def test_get_property_vectors(self):

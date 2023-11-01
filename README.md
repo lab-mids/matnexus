@@ -208,7 +208,8 @@ A jupyter notebook how the MatNexus suite can be used is provided in
 
 ## License
 
-This project is licensed under the GNU Lesser General Public License v2.1 (LGPLv2.1). The terms and conditions for copying, distribution, and modification are outlined in the `LICENSE`file in the root directory of this project.
+This project is licensed under the GNU Lesser General Public License v3.0 (LGPLv3.0). The terms and conditions for copying, distribution, and modification are outlined in the `LICENSE` file in the root directory of this project.
 
-By using or distributing this project, you agree to abide by the terms and conditions of this license. For more details regarding the GNU LGPLv2.1, please see [GNU Lesser General Public License v2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html).
+By using or distributing this project, you agree to abide by the terms and conditions of this license. For more details regarding the GNU LGPLv3.0, please see [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.html).
+
 
